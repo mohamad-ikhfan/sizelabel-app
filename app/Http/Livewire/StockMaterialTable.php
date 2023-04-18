@@ -21,6 +21,7 @@ class StockMaterialTable extends DataTableComponent
     {
         $this->setPrimaryKey('id')
             ->setColumnSelectDisabled()
+            ->setDefaultSort('id', 'desc')
             ->setTdAttributes(function (Column $column) {
                 if ($column->isField('code')) {
                     $class = 'uppercase';
@@ -71,6 +72,26 @@ class StockMaterialTable extends DataTableComponent
             Column::make("Description", "description")
                 ->sortable()
                 ->searchable(),
+
+            Column::make(__("Action"), "id")
+                ->format(function ($value) {
+
+                    return view('components.button-action')
+                        ->with('slots', [
+                            [
+                                'class' => 'inline-flex items-center px-2 py-1 text-xs space-x-1 font-medium text-center text-white rounded-lg bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300 dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-amber-800',
+                                'icon' => 'fa-solid fa-pen-to-square',
+                                'method' => 'wire:click="edit(' . $value . ')"',
+                                'name' => __('Edit')
+                            ],
+                            [
+                                'class' => 'inline-flex items-center px-2 py-1 text-xs space-x-1 font-medium text-center text-white rounded-lg bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800',
+                                'icon' => 'fa-solid fa-trash-can',
+                                'method' => 'wire:click="delete(' . $value . ')"',
+                                'name' => __('Delete')
+                            ],
+                        ]);
+                }),
         ];
     }
 
@@ -134,6 +155,83 @@ class StockMaterialTable extends DataTableComponent
         if (count($this->material_quantities) > 0) {
             $this->banner('Successfully added ' . strtolower($this->title));
         }
+        $this->closeModal();
+    }
+
+    public function edit($id)
+    {
+        $this->resetInputFields();
+
+        $stock = StockMaterial::find($id);
+        $this->materials = Material::where('id', $stock->material->id)->get();
+        $this->stock_id = $stock->id;
+        $this->material_quantities[$stock->material->id] = "$stock->quantity";
+        $this->date = $stock->date;
+        $this->description = $stock->description;
+        $this->title = "Edit Stock";
+        $this->content = "Update";
+        $this->isModalOpen = true;
+    }
+
+    public function update()
+    {
+        $this->validate([
+            'material_quantities' => 'nullable|array',
+            'date' => 'required|date',
+            'description' => 'nullable|string|max:255'
+        ]);
+        $stock_material = StockMaterial::find($this->stock_id);
+        $quantity_material = $this->material_quantities[$stock_material->material->id];
+        if ($stock_material->status === 'in') {
+            if ($quantity_material < $stock_material->quantity) {
+                $quantity = $stock_material->quantity - $quantity_material;
+                $last_stock = $stock_material->last_stock - $quantity;
+            } elseif ($quantity_material > $stock_material->quantity) {
+                $quantity = $quantity_material - $stock_material->quantity;
+                $last_stock = $stock_material->last_stock + $quantity;
+            } else {
+                $last_stock = $stock_material->last_stock;
+            }
+        } else {
+            if ($quantity_material < $stock_material->quantity) {
+                $quantity = $stock_material->quantity - $quantity_material;
+                $last_stock = $stock_material->last_stock + $quantity;
+            } elseif ($quantity_material > $stock_material->quantity) {
+                $quantity = $quantity_material - $stock_material->quantity;
+                $last_stock = $stock_material->last_stock - $quantity;
+            } else {
+                $last_stock = $stock_material->last_stock;
+            }
+        }
+        $stock_material->user_id = auth()->user()->id;
+        $stock_material->quantity = $quantity_material;
+        $stock_material->date = $this->date;
+        $stock_material->description = !$this->description ? null : $this->description;
+        $stock_material->last_stock = $last_stock;
+        $stock_material->save();
+
+        if ($stock_material->wasChanged()) {
+            $this->banner('Successfully updated stock material.');
+        }
+        $this->closeModal();
+    }
+
+    public function delete($id)
+    {
+        $this->resetInputFields();
+
+        $this->stock_id = $id;
+        $this->title = "Are you sure delete this data?";
+        $this->content = "Delete";
+        $this->isModalConfirm = true;
+    }
+
+    public function destroy()
+    {
+        $stock = StockMaterial::find($this->stock_id);
+        $stock->delete();
+
+        $this->banner('Successfully deleted stock.');
         $this->closeModal();
     }
 

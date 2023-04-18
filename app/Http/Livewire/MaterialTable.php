@@ -62,7 +62,7 @@ class MaterialTable extends DataTableComponent
                     return view('components.button-action')
                         ->with('slots', [
                             [
-                                'class' => 'inline-flex items-center px-2 py-1 text-xs space-x-1 font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800',
+                                'class' => 'inline-flex items-center px-2 py-1 text-xs space-x-1 font-medium text-center text-white rounded-lg bg-amber-700 hover:bg-amber-800 focus:ring-4 focus:ring-amber-300 dark:bg-amber-600 dark:hover:bg-amber-700 dark:focus:ring-amber-800',
                                 'icon' => 'fa-solid fa-pen-to-square',
                                 'method' => 'wire:click="edit(' . $value . ')"',
                                 'name' => __('Edit')
@@ -170,8 +170,8 @@ class MaterialTable extends DataTableComponent
 
     public function destroy()
     {
-        $package = Material::find($this->material_id);
-        $package->delete();
+        $material = Material::find($this->material_id);
+        $material->delete();
 
         $this->banner('Successfully deleted material.');
         $this->closeModal();
