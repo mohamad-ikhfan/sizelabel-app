@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('stock_materials', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id');
             $table->foreignId('material_id');
             $table->double('quantity');
             $table->date('date');

@@ -67,6 +67,10 @@ class StockMaterialTable extends DataTableComponent
             Column::make("Last Stock", "last_stock")
                 ->sortable()
                 ->searchable(),
+
+            Column::make("Description", "description")
+                ->sortable()
+                ->searchable(),
         ];
     }
 
@@ -111,6 +115,7 @@ class StockMaterialTable extends DataTableComponent
             $quantity = $quantity_materials[$i];
             $last_stock = StockMaterial::where('material_id', $material_id)->latest()->first()->last_stock ?? 0;
             $stock_material = new StockMaterial;
+            $stock_material->user_id = auth()->user()->id;
             $stock_material->material_id = $material_id;
             $stock_material->quantity = $quantity;
             $stock_material->date = $this->date;
