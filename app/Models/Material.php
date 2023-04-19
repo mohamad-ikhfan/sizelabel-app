@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Material extends Model
@@ -16,5 +17,10 @@ class Material extends Model
     public function material_group(): BelongsTo
     {
         return $this->belongsTo(MaterialGroup::class);
+    }
+
+    public function stocks(): HasMany
+    {
+        return $this->hasMany(StockMaterial::class);
     }
 }
