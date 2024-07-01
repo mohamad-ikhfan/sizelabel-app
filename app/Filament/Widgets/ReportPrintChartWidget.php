@@ -14,6 +14,18 @@ class ReportPrintChartWidget extends ChartWidget
 
     public ?string $filter = "";
 
+    public array $rgbColors = [
+        '0,0,0',
+        '0,0,255',
+        '255,0,0',
+        '0,255,0',
+        '255,255,0',
+        '0,255,255',
+        '255,0,255',
+        '0,255,255',
+        '255,255,255',
+    ];
+
     protected function getData(): array
     {
         $datasets = [];
@@ -23,6 +35,7 @@ class ReportPrintChartWidget extends ChartWidget
             ->groupBy('user_id')
             ->get();
 
+        $useId = 1;
         foreach ($reportPrintByUsers as $reportPrintByUser) {
             $quantities = [];
 
@@ -48,32 +61,24 @@ class ReportPrintChartWidget extends ChartWidget
                 $quantities[] = $qtyPerdays->sum();
             }
 
-            $label = "NaN";
-            $backgrounColor = 'rgba(0, 0, 0,  0.2)';
-            $borderColor = 'rgba(0, 0, 0,  0.1)';
+            $label =  $reportPrintByUser->user->name ?? "NaN";
+            $backgrounColor = $this->rgbColors[0] . ',0.2';
+            $borderColor = $this->rgbColors[0] . ',1.0';
 
-            if ($reportPrintByUser->user) {
-                $label = $reportPrintByUser->user->name;
-                switch ($reportPrintByUser->user->user_id) {
-                    case 1:
-                        $backgrounColor = 'rgba(0, 0, 255,  0.2)';
-                        $borderColor = 'rgba(0, 0, 255,  0.1)';
-                        break;
-
-                    default:
-                        $backgrounColor = 'rgba(0, 255, 0,  0.2)';
-                        $borderColor = 'rgba(0, 255, 0,  0.1)';
-                        break;
-                }
+            if ($label !== "NaN") {
+                $backgrounColor = $this->rgbColors[$useId] . ',0.2';
+                $borderColor = $this->rgbColors[$useId] . ',1.0';
             }
 
             $datasets[] = [
                 'label' => $label,
                 'data' => $quantities,
-                'backgroundColor' => $backgrounColor,
-                'borderColor' => $borderColor,
+                'backgroundColor' => "rgba($backgrounColor)",
+                'borderColor' => "rgba($borderColor)",
                 'tension' => 0.3
             ];
+
+            $useId++;
         }
 
         return [
