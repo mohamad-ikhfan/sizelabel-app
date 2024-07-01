@@ -89,7 +89,8 @@ class SchedulePrintResource extends Resource
                         Tables\Columns\TextColumn::make('release')
                             ->date('m/d'),
                         Tables\Columns\TextColumn::make('style_number'),
-                        Tables\Columns\TextColumn::make('model_name'),
+                        Tables\Columns\TextColumn::make('model_name')
+                            ->wrap(),
                         Tables\Columns\TextColumn::make('qty')
                             ->numeric(),
                     ])

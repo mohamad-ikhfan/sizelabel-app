@@ -92,7 +92,9 @@ class ListSchedulePrints extends ListRecords
                             Forms\Components\Select::make('from_release')
                                 ->options(function (Loadplan $loadplan) {
                                     $loadplans = $loadplan->all()->pluck('release')->toArray();
-                                    rsort($loadplans);
+                                    if (count($loadplans) > 0) {
+                                        rsort($loadplans);
+                                    }
                                     $options = [];
                                     foreach ($loadplans as $value) {
                                         $options[$value] = now()->parse($value)->format('m/d y');
@@ -101,6 +103,27 @@ class ListSchedulePrints extends ListRecords
                                 })
                                 ->searchable()
                                 ->required()
+                                ->live(),
+
+                            Forms\Components\Select::make('except_remarks')
+                                ->options(function (Loadplan $loadplan, Forms\Get $get) {
+                                    $options = [];
+                                    if ($get('from_release')) {
+                                        $loadplans = $loadplan->where('release', '>=', $get('from_release'))
+                                            ->get()
+                                            ->pluck('remark')
+                                            ->toArray();
+                                        if (count($loadplans) > 0) {
+                                            sort($loadplans);
+                                        }
+                                        foreach ($loadplans as $value) {
+                                            $options[$value] = $value;
+                                        }
+                                    }
+                                    return $options;
+                                })
+                                ->multiple()
+                                ->nullable(),
                         ]);
                 })
                 ->action(function (array $data) {
@@ -114,14 +137,12 @@ class ListSchedulePrints extends ListRecords
                     foreach ($loadplansByReleases as $loadplansByRelease) {
                         $spkPublishes = collect();
                         $qtyOrigins = collect();
-                        $loadplans = Loadplan::where($loadplansByRelease->toArray())->get();
+                        $loadplans = Loadplan::WhereNotIn('remark', $data['except_remarks'])->where($loadplansByRelease->toArray())->get();
                         foreach ($loadplans as $loadplan) {
-                            if (!is_numeric(strpos(strtolower($loadplan->remark), 'jx2', 0)) && !is_numeric(strpos(strtolower($loadplan->remark), 'pm', 0)) && !is_numeric(strpos(strtolower($loadplan->remark), 'cancel', 0))) {
-                                if (!empty($loadplan->spk_publish)) {
-                                    $spkPublishes->push(now()->parse($loadplan->spk_publish)->getTimestamp());
-                                }
-                                $qtyOrigins->push($loadplan->qty_origin);
+                            if (!empty($loadplan->spk_publish)) {
+                                $spkPublishes->push(now()->parse($loadplan->spk_publish)->getTimestamp());
                             }
+                            $qtyOrigins->push($loadplan->qty_origin);
                         }
 
                         $schedule = null;
