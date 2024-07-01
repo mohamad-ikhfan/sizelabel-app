@@ -112,6 +112,7 @@ class SchedulePrintResource extends Resource
                             ->color(fn ($state): string => $state == 'printed' ? 'success' : 'warning'),
                         Tables\Columns\TextColumn::make('status_updated_by_user.name')
                             ->label('Printed by')
+                            ->wrap()
                     ])
                     ->alignCenter(),
             ])
