@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\SchedulePrintResource\Pages;
 
 use App\Filament\Resources\SchedulePrintResource;
+use App\Models\CalendarHolidayId;
 use App\Models\Loadplan;
 use App\Models\ReportPrint;
 use App\Models\SchedulePrint;
@@ -21,7 +22,7 @@ class ListSchedulePrints extends ListRecords
     {
         return [
             Actions\Action::make('Sync to printed')
-                ->color('primary')
+                ->color('gray')
                 ->action(function () {
                     $schedulePrints = SchedulePrint::all();
                     foreach ($schedulePrints as $schedulePrint) {
@@ -68,7 +69,7 @@ class ListSchedulePrints extends ListRecords
                 ->hidden(auth()->user()->id !== 1),
 
             Actions\Action::make('Refresh material')
-                ->color('primary')
+                ->color('gray')
                 ->action(function () {
                     $schedulePrints = SchedulePrint::whereNull('shoe_id')->get();
                     foreach ($schedulePrints as $schedulePrint) {
@@ -147,10 +148,9 @@ class ListSchedulePrints extends ListRecords
 
                         $schedule = null;
                         if (isset($spkPublishes) && !empty($spkPublishes->avg())) {
-                            $file = Storage::get('public/HolidayCalendarID.json');
                             $schedule = now()->parse(date('Y-m-d', $spkPublishes->avg()));
-                            foreach (json_decode($file ?? [], true) as $res) {
-                                if ($res['date'] == $schedule->format('Y-m-d')) {
+                            foreach (CalendarHolidayId::all() as $calendar) {
+                                if ($calendar->date == $schedule->format('Y-m-d')) {
                                     $schedule->subDay();
                                 }
                             }
