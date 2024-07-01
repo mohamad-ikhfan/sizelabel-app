@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\LoadplanResource\Pages;
 
+use App\Exports\LoadplanExport;
 use App\Filament\Resources\LoadplanResource;
 use App\Jobs\LoadplanImportJob;
 use App\Models\User;
@@ -18,6 +19,12 @@ class ListLoadplans extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('Export loadplan')
+                ->color('gray')
+                ->action(function () {
+                    return (new LoadplanExport)->download();
+                }),
+
             Actions\Action::make('New loadplan import')
                 ->color('primary')
                 ->modalWidth('lg')
