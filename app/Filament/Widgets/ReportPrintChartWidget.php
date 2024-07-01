@@ -31,7 +31,10 @@ class ReportPrintChartWidget extends ChartWidget
                 ->whereMonth('print_date', intval(!empty($this->filter) ? $this->filter : now()->month))
                 ->get()
                 ->toArray();
-            sort($reportPrintPerdays);
+
+            if (count($reportPrintPerdays) > 0) {
+                sort($reportPrintPerdays);
+            }
 
             foreach ($reportPrintPerdays as $reportPrintPerday) {
                 $labels[] = now()->parse($reportPrintPerday['print_date'])->format('d M');
@@ -45,11 +48,30 @@ class ReportPrintChartWidget extends ChartWidget
                 $quantities[] = $qtyPerdays->sum();
             }
 
+            $label = "NaN";
+            $backgrounColor = 'rgba(0, 0, 0,  0.2)';
+            $borderColor = 'rgba(0, 0, 0,  0.1)';
+
+            if ($reportPrintByUser->user) {
+                $label = $reportPrintByUser->user->name;
+                switch ($reportPrintByUser->user->user_id) {
+                    case 1:
+                        $backgrounColor = 'rgba(0, 0, 255,  0.2)';
+                        $borderColor = 'rgba(0, 0, 255,  0.1)';
+                        break;
+
+                    default:
+                        $backgrounColor = 'rgba(0, 255, 0,  0.2)';
+                        $borderColor = 'rgba(0, 255, 0,  0.1)';
+                        break;
+                }
+            }
+
             $datasets[] = [
-                'label' => $reportPrintByUser->user->name,
+                'label' => $label,
                 'data' => $quantities,
-                'backgroundColor' => $reportPrintByUser->user_id == 1 ? 'rgba(0, 0, 255,  0.2)' : 'rgba(0, 255, 0,  0.2)',
-                'borderColor' => $reportPrintByUser->user_id == 1 ? 'rgba(0, 0, 255, 1.0)' : 'rgba(0, 255, 0, 1.0)',
+                'backgroundColor' => $backgrounColor,
+                'borderColor' => $borderColor,
                 'tension' => 0.3
             ];
         }
