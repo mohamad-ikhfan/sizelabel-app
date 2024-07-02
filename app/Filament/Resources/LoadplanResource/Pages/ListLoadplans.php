@@ -2,8 +2,8 @@
 
 namespace App\Filament\Resources\LoadplanResource\Pages;
 
-use App\Exports\LoadplanExport;
 use App\Filament\Resources\LoadplanResource;
+use App\Jobs\LoadplanExportJob;
 use App\Jobs\LoadplanImportJob;
 use App\Models\User;
 use Filament\Actions;
@@ -22,7 +22,13 @@ class ListLoadplans extends ListRecords
             Actions\Action::make('Export loadplan')
                 ->color('gray')
                 ->action(function () {
-                    return (new LoadplanExport)->download();
+                    LoadplanExportJob::dispatch(auth()->user());
+
+                    Notifications\Notification::make()
+                        ->success()
+                        ->title('Request export loadplan successfully.')
+                        ->body('Please wait notification after finished.')
+                        ->send();
                 }),
 
             Actions\Action::make('New loadplan import')

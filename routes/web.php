@@ -1,10 +1,7 @@
 <?php
 
-// use App\Imports\ReportPrintImport;
-// use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
 
-// Route::get('/testing', function () {
-//     $file = storage_path('app/public/imports/LAPORAN PRINT SIZELABEL.xlsx');
-
-//     (new ReportPrintImport)->import($file);
-// });
+Route::get('download/{file}', function ($file) {
+    return response()->download(storage_path('app/public/exports/' . $file));
+})->name('download');
