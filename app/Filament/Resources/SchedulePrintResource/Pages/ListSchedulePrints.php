@@ -92,10 +92,7 @@ class ListSchedulePrints extends ListRecords
                         ->schema([
                             Forms\Components\Select::make('from_release')
                                 ->options(function (Loadplan $loadplan) {
-                                    $loadplans = $loadplan->all()->pluck('release')->toArray();
-                                    if (count($loadplans) > 0) {
-                                        rsort($loadplans);
-                                    }
+                                    $loadplans = $loadplan->orderBy('release', 'desc')->get()->pluck('release')->toArray();
                                     $options = [];
                                     foreach ($loadplans as $value) {
                                         $options[$value] = now()->parse($value)->format('m/d y');
@@ -112,11 +109,9 @@ class ListSchedulePrints extends ListRecords
                                     if ($get('from_release')) {
                                         $loadplans = $loadplan->where('release', '>=', $get('from_release'))
                                             ->get()
+                                            ->orderBy('release')
                                             ->pluck('remark')
                                             ->toArray();
-                                        if (count($loadplans) > 0) {
-                                            sort($loadplans);
-                                        }
                                         foreach ($loadplans as $value) {
                                             $options[$value] = $value;
                                         }

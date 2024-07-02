@@ -128,8 +128,7 @@ class ReportPrintResource extends Resource
                     ->searchable()
                     ->options(function (ReportPrint $reportPrint) {
                         $options = [];
-                        $reportPrints = $reportPrint->all()->pluck('print_date')->toArray();
-                        sort($reportPrints);
+                        $reportPrints = $reportPrint->orderBy('print_date')->get()->pluck('print_date')->toArray();
                         foreach ($reportPrints as $value) {
                             $options[$value] = now()->parse($value)->format('d F Y');
                         }
@@ -139,8 +138,7 @@ class ReportPrintResource extends Resource
                     ->searchable()
                     ->options(function (ReportPrint $reportPrint) {
                         $options = [];
-                        $reportPrints = $reportPrint->all()->pluck('line')->toArray();
-                        sort($reportPrints);
+                        $reportPrints = $reportPrint->orderBy('line')->get()->pluck('line')->toArray();
                         foreach ($reportPrints as $value) {
                             if (!empty($value)) {
                                 $options[$value] = $value;
@@ -152,8 +150,7 @@ class ReportPrintResource extends Resource
                     ->searchable()
                     ->options(function (ReportPrint $reportPrint) {
                         $options = [];
-                        $loadplans = $reportPrint->all()->pluck('release')->toArray();
-                        sort($loadplans);
+                        $loadplans = $reportPrint->orderBy('release')->get()->pluck('release')->toArray();
                         foreach ($loadplans as $value) {
                             $options[$value] = now()->parse($value)->format('m/d');
                         }
@@ -163,8 +160,7 @@ class ReportPrintResource extends Resource
                     ->searchable()
                     ->options(function (ReportPrint $reportPrint) {
                         $options = [];
-                        $loadplans = $reportPrint->all()->pluck('style_number')->toArray();
-                        sort($loadplans);
+                        $loadplans = $reportPrint->orderBy('style_number')->get()->pluck('style_number')->toArray();
                         foreach ($loadplans as $value) {
                             if (!empty($value)) {
                                 $options[$value] = $value;
@@ -176,8 +172,7 @@ class ReportPrintResource extends Resource
                     ->searchable()
                     ->options(function (ReportPrint $reportPrint) {
                         $options = [];
-                        $reportPrints = $reportPrint->all()->pluck('model_name')->toArray();
-                        sort($reportPrints);
+                        $reportPrints = $reportPrint->orderBy('model_name')->get()->pluck('model_name')->toArray();
                         foreach ($reportPrints as $value) {
                             if (!empty($value)) {
                                 $options[$value] = $value;

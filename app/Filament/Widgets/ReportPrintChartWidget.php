@@ -42,12 +42,9 @@ class ReportPrintChartWidget extends ChartWidget
             $reportPrintPerdays = ReportPrint::select('print_date')
                 ->groupBy('print_date')
                 ->whereMonth('print_date', intval(!empty($this->filter) ? $this->filter : now()->month))
+                ->orderBy('print_date')
                 ->get()
                 ->toArray();
-
-            if (count($reportPrintPerdays) > 0) {
-                sort($reportPrintPerdays);
-            }
 
             foreach ($reportPrintPerdays as $reportPrintPerday) {
                 $labels[] = now()->parse($reportPrintPerday['print_date'])->format('d M');
@@ -93,6 +90,7 @@ class ReportPrintChartWidget extends ChartWidget
 
         $reportPrints = ReportPrint::select('print_date')
             ->groupBy('print_date')
+            ->orderBy('print_date', 'desc')
             ->get()
             ->toArray();
 

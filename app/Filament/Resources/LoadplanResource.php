@@ -156,8 +156,7 @@ class LoadplanResource extends Resource
                     ->searchable()
                     ->options(function (Loadplan $loadplan) {
                         $options = [];
-                        $loadplans = $loadplan->all()->pluck('line')->toArray();
-                        sort($loadplans);
+                        $loadplans = $loadplan->orderBy('line')->get()->pluck('line')->toArray();
                         foreach ($loadplans as $value) {
                             if (!empty($value)) {
                                 $options[$value] = $value;
@@ -169,8 +168,7 @@ class LoadplanResource extends Resource
                     ->searchable()
                     ->options(function (Loadplan $loadplan) {
                         $options = [];
-                        $loadplans = $loadplan->all()->pluck('release')->toArray();
-                        sort($loadplans);
+                        $loadplans = $loadplan->orderBy('release')->get()->pluck('release')->toArray();
                         foreach ($loadplans as $value) {
                             $options[$value] = now()->parse($value)->format('m/d');
                         }
@@ -180,8 +178,7 @@ class LoadplanResource extends Resource
                     ->searchable()
                     ->options(function (Loadplan $loadplan) {
                         $options = [];
-                        $loadplans = $loadplan->all()->pluck('style_number')->toArray();
-                        sort($loadplans);
+                        $loadplans = $loadplan->orderBy('style_number')->get()->pluck('style_number')->toArray();
                         foreach ($loadplans as $value) {
                             if (!empty($value)) {
                                 $options[$value] = $value;
@@ -193,8 +190,7 @@ class LoadplanResource extends Resource
                     ->searchable()
                     ->options(function (Loadplan $loadplan) {
                         $options = [];
-                        $loadplans = $loadplan->all()->pluck('model_name')->toArray();
-                        sort($loadplans);
+                        $loadplans = $loadplan->orderBy('model_name')->get()->pluck('model_name')->toArray();
                         foreach ($loadplans as $value) {
                             if (!empty($value)) {
                                 $options[$value] = $value;
@@ -206,8 +202,7 @@ class LoadplanResource extends Resource
                     ->searchable()
                     ->options(function (Loadplan $loadplan) {
                         $options = [];
-                        $loadplans = $loadplan->all()->pluck('special')->toArray();
-                        sort($loadplans);
+                        $loadplans = $loadplan->orderBy('special')->get()->pluck('special')->toArray();
                         foreach ($loadplans as $value) {
                             if (!empty($value)) {
                                 $options[$value] = $value;
@@ -219,8 +214,7 @@ class LoadplanResource extends Resource
                     ->searchable()
                     ->options(function (Loadplan $loadplan) {
                         $options = [];
-                        $loadplans = $loadplan->all()->pluck('remark')->toArray();
-                        sort($loadplans);
+                        $loadplans = $loadplan->orderBy('remark')->get()->pluck('remark')->toArray();
                         foreach ($loadplans as $value) {
                             if (!empty($value)) {
                                 $options[$value] = $value;
