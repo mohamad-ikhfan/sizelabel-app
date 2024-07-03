@@ -5,14 +5,19 @@ namespace App\Filament\Widgets;
 use App\Models\ReportPrint;
 use App\Models\User;
 use Filament\Widgets\ChartWidget;
+use Illuminate\Contracts\Support\Htmlable;
 
 class ReportPrintChartWidget extends ChartWidget
 {
-    protected static ?string $heading = 'Report Print Perdays';
+
+    public function getHeading(): string|Htmlable|null
+    {
+        return !empty($this->filter) ? 'Result prints of ' . now()->parse($this->filter . '-01')->format('F, Y') : 'Result prints of ' . now()->format('F, Y');
+    }
 
     protected static ?string $maxHeight = '300px';
 
-    public ?string $filter = "";
+    public ?string $filter = null;
 
     public array $rgbColors = [
         '0,0,0',
@@ -41,7 +46,8 @@ class ReportPrintChartWidget extends ChartWidget
 
             $reportPrintPerdays = ReportPrint::select('print_date')
                 ->groupBy('print_date')
-                ->whereMonth('print_date', intval(!empty($this->filter) ? $this->filter : now()->month))
+                ->whereYear('print_date', intval(!empty($this->filter) ? explode('-', $this->filter)[0] : now()->year))
+                ->whereMonth('print_date', intval(!empty($this->filter) ? explode('-', $this->filter)[1] : now()->month))
                 ->orderBy('print_date')
                 ->get()
                 ->toArray();
@@ -96,7 +102,7 @@ class ReportPrintChartWidget extends ChartWidget
 
         foreach ($reportPrints as $reportPrint) {
             if (!is_numeric(array_search($reportPrint['print_date'], $filters))) {
-                $filters += [now()->parse($reportPrint['print_date'])->format('m') => now()->parse($reportPrint['print_date'])->format('F, Y')];
+                $filters += [now()->parse($reportPrint['print_date'])->format('Y-m') => now()->parse($reportPrint['print_date'])->format('F, Y')];
             }
         }
 
