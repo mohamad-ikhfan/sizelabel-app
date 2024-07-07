@@ -26,12 +26,30 @@ class UserResource extends Resource
             ->schema([
                 Forms\Components\Section::make()
                     ->schema([
-                        Forms\Components\TextInput::make('nik'),
-                        Forms\Components\TextInput::make('name'),
-                        Forms\Components\TextInput::make('phone'),
-                        Forms\Components\TextInput::make('email'),
-                        Forms\Components\Select::make('roles')
-                            ->relationship(name: 'roles', titleAttribute: 'name')
+                        Forms\Components\TextInput::make('nik')
+                            ->label('NIK')
+                            ->integer()
+                            ->unique(ignoreRecord: true)
+                            ->required(),
+
+                        Forms\Components\TextInput::make('name')
+                            ->string()
+                            ->required(),
+
+                        Forms\Components\TextInput::make('phone')
+                            ->unique(ignoreRecord: true)
+                            ->integer()
+                            ->prefix('+62')
+                            ->placeholder('838xxxxxxxx')
+                            ->nullable(),
+
+                        Forms\Components\TextInput::make('email')
+                            ->unique(ignoreRecord: true)
+                            ->email()
+                            ->nullable(),
+
+                        Forms\Components\Select::make('permissions')
+                            ->relationship(name: 'permissions', titleAttribute: 'name')
                             ->searchable()
                             ->preload()
                             ->columnSpanFull(),
@@ -44,11 +62,25 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nik'),
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('phone'),
-                Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('roles'),
+                Tables\Columns\TextColumn::make('nik')
+                    ->label('NIK')
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('name')
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('phone')
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->searchable(),
+
+                Tables\Columns\TextColumn::make('permissions'),
+
             ])
             ->filters([
                 //
