@@ -37,6 +37,18 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        Schema::create('permissions', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
+
+        Schema::create('model_has_permissions', function (Blueprint $table) {
+            $table->foreignId('permission_id')->references('permissions');
+            $table->string('model_type');
+            $table->foreignId('model_id');
+        });
     }
 
     /**
@@ -47,5 +59,7 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('permissions');
+        Schema::dropIfExists('model_has_permissions');
     }
 };
