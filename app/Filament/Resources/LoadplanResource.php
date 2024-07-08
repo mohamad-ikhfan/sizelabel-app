@@ -90,8 +90,7 @@ class LoadplanResource extends Resource
                             ->default('-'),
                     ])
                     ->columns(),
-            ])
-            ->disabled(auth()->user()->id !== 1);
+            ]);
     }
 
     public static function table(Table $table): Table

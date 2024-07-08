@@ -50,6 +50,7 @@ class UserResource extends Resource
 
                         Forms\Components\Select::make('permissions')
                             ->relationship(name: 'permissions', titleAttribute: 'name')
+                            ->multiple()
                             ->searchable()
                             ->preload()
                             ->columnSpanFull(),

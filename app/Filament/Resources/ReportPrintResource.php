@@ -77,8 +77,7 @@ class ReportPrintResource extends Resource
                             ->nullable()
                     ])
 
-            ])
-            ->disabled(auth()->user()->id !== 1);
+            ]);
     }
 
     public static function table(Table $table): Table

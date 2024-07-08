@@ -21,7 +21,7 @@ class ListSchedulePrints extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Sync to printed')
+            Actions\Action::make('sync-to-printed')
                 ->color('gray')
                 ->action(function () {
                     $schedulePrints = SchedulePrint::all();
@@ -65,10 +65,9 @@ class ListSchedulePrints extends ListRecords
                             }
                         }
                     }
-                })
-                ->hidden(auth()->user()->id !== 1),
+                }),
 
-            Actions\Action::make('Refresh material')
+            Actions\Action::make('refresh-material')
                 ->color('gray')
                 ->action(function () {
                     $schedulePrints = SchedulePrint::whereNull('shoe_id')->get();
@@ -80,10 +79,9 @@ class ListSchedulePrints extends ListRecords
                             ]);
                         }
                     }
-                })
-                ->hidden(auth()->user()->id !== 1),
+                }),
 
-            Actions\Action::make('New schedule print')
+            Actions\Action::make('new-schedule-print')
                 ->color('primary')
                 ->modalWidth('lg')
                 ->modalSubmitActionLabel('Save')
@@ -193,7 +191,6 @@ class ListSchedulePrints extends ListRecords
                         ->title('Schedule created.')
                         ->send();
                 })
-                ->hidden(auth()->user()->id !== 1)
         ];
     }
 }

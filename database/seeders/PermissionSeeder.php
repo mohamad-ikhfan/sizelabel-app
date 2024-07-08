@@ -16,6 +16,50 @@ class PermissionSeeder extends Seeder
     {
         $data = [
             [
+                'name' => 'view-any-role'
+            ],
+            [
+                'name' => 'view-role'
+            ],
+            [
+                'name' => 'create-role'
+            ],
+            [
+                'name' => 'update-role'
+            ],
+            [
+                'name' => 'delete-role'
+            ],
+            [
+                'name' => 'restore-role'
+            ],
+            [
+                'name' => 'force-delete-role'
+            ],
+
+            [
+                'name' => 'view-any-permission'
+            ],
+            [
+                'name' => 'view-permission'
+            ],
+            [
+                'name' => 'create-permission'
+            ],
+            [
+                'name' => 'update-permission'
+            ],
+            [
+                'name' => 'delete-permission'
+            ],
+            [
+                'name' => 'restore-permission'
+            ],
+            [
+                'name' => 'force-delete-permission'
+            ],
+
+            [
                 'name' => 'view-any-user'
             ],
             [
@@ -80,6 +124,12 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'force-delete-loadplan'
             ],
+            [
+                'name' => 'export-loadplan'
+            ],
+            [
+                'name' => 'new-import-loadplan'
+            ],
 
             [
                 'name' => 'view-any-report-print'
@@ -102,6 +152,9 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'force-delete-report-print'
             ],
+            [
+                'name' => 'new-import-report'
+            ],
 
             [
                 'name' => 'view-any-schedule-print'
@@ -123,6 +176,15 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'force-delete-schedule-print'
+            ],
+            [
+                'name' => 'new-schedule-print'
+            ],
+            [
+                'name' => 'refresh-material'
+            ],
+            [
+                'name' => 'sync-to-printed'
             ],
         ];
 

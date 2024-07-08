@@ -18,7 +18,7 @@ class ListReportPrints extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('New report print import')
+            Actions\Action::make('new-import-report')
                 ->color('primary')
                 ->modalWidth('lg')
                 ->modalSubmitActionLabel('Import')
@@ -46,7 +46,7 @@ class ListReportPrints extends ListRecords
                         ->body('After import finished notification send.')
                         ->send();
                 })
-                ->hidden(auth()->user()->id !== 1),
+                ->visible(auth()->user()->can('new-import-report')),
         ];
     }
 }

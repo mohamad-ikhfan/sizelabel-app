@@ -19,7 +19,7 @@ class ListLoadplans extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('Export loadplan')
+            Actions\Action::make('export-loadplan')
                 ->color('gray')
                 ->action(function () {
                     LoadplanExportJob::dispatch(auth()->user());
@@ -29,9 +29,10 @@ class ListLoadplans extends ListRecords
                         ->title('Request export loadplan successfully.')
                         ->body('Please wait notification after finished.')
                         ->send();
-                }),
+                })
+                ->visible(auth()->user()->can('export-loadplan')),
 
-            Actions\Action::make('New loadplan import')
+            Actions\Action::make('new-import-loadplan')
                 ->color('primary')
                 ->modalWidth('lg')
                 ->modalSubmitActionLabel('Import')
@@ -62,7 +63,7 @@ class ListLoadplans extends ListRecords
                         ->body('After import finished notification send.')
                         ->send();
                 })
-                ->hidden(auth()->user()->id !== 1),
+                ->visible(auth()->user()->can('new-import-loadplan')),
         ];
     }
 }

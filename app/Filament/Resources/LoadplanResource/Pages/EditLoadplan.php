@@ -13,8 +13,7 @@ class EditLoadplan extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make()
-                ->hidden(auth()->user()->id !== 1),
+            Actions\DeleteAction::make(),
         ];
     }
 }

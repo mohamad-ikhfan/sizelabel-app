@@ -72,8 +72,7 @@ class ShoeResource extends Resource
                             ->required(),
                     ])
                     ->columns()
-            ])
-            ->disabled(auth()->user()->id !== 1);
+            ]);
     }
 
     public static function table(Table $table): Table

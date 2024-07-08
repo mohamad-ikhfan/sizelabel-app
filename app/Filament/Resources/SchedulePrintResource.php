@@ -68,8 +68,7 @@ class SchedulePrintResource extends Resource
                                     ->columnSpanFull()
                             ])
                     ])
-            ])
-            ->disabled(auth()->user()->id !== 1);
+            ]);
     }
 
     public static function table(Table $table): Table
