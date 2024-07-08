@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionSeeder extends Seeder
 {
@@ -35,6 +36,94 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'force-delete-user'
             ],
+
+            [
+                'name' => 'view-any-shoe'
+            ],
+            [
+                'name' => 'view-shoe'
+            ],
+            [
+                'name' => 'create-shoe'
+            ],
+            [
+                'name' => 'update-shoe'
+            ],
+            [
+                'name' => 'delete-shoe'
+            ],
+            [
+                'name' => 'restore-shoe'
+            ],
+            [
+                'name' => 'force-delete-shoe'
+            ],
+
+            [
+                'name' => 'view-any-loadplan'
+            ],
+            [
+                'name' => 'view-loadplan'
+            ],
+            [
+                'name' => 'create-loadplan'
+            ],
+            [
+                'name' => 'update-loadplan'
+            ],
+            [
+                'name' => 'delete-loadplan'
+            ],
+            [
+                'name' => 'restore-loadplan'
+            ],
+            [
+                'name' => 'force-delete-loadplan'
+            ],
+
+            [
+                'name' => 'view-any-report-print'
+            ],
+            [
+                'name' => 'view-report-print'
+            ],
+            [
+                'name' => 'create-report-print'
+            ],
+            [
+                'name' => 'update-report-print'
+            ],
+            [
+                'name' => 'delete-report-print'
+            ],
+            [
+                'name' => 'restore-report-print'
+            ],
+            [
+                'name' => 'force-delete-report-print'
+            ],
+
+            [
+                'name' => 'view-any-schedule-print'
+            ],
+            [
+                'name' => 'view-schedule-print'
+            ],
+            [
+                'name' => 'create-schedule-print'
+            ],
+            [
+                'name' => 'update-schedule-print'
+            ],
+            [
+                'name' => 'delete-schedule-print'
+            ],
+            [
+                'name' => 'restore-schedule-print'
+            ],
+            [
+                'name' => 'force-delete-schedule-print'
+            ],
         ];
 
         for ($i = 0; $i < count($data); $i++) {
@@ -45,5 +134,8 @@ class PermissionSeeder extends Seeder
                 ]);
             }
         }
+
+        $role = Role::create(['name' => 'super-admin']);
+        $role->givePermissionTo(Permission::all());
     }
 }

@@ -32,7 +32,12 @@ class UserSeeder extends Seeder
 
         for ($i = 0; $i < count($data); $i++) {
             if (User::where('nik', $data[$i]['nik'])->count() == 0) {
-                User::create($data[$i]);
+                if ($data[$i]['nik'] == '20535') {
+                    $user = User::create($data[$i]);
+                    $user->assignRole('super-admin');
+                } else {
+                    User::create($data[$i]);
+                }
             }
         }
     }
