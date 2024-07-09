@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('special');
             $table->float('qty_total');
             $table->string('remark');
-            $table->foreignId('user_id')->references('users')->nullable();
+            $table->foreignId('user_id')->nullable();
             $table->timestamps();
         });
     }

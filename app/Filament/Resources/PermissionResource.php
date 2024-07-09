@@ -20,6 +20,8 @@ class PermissionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'User Management';
+
     public static function canAccess(): bool
     {
         return auth()->user()->can('view-any-permission');

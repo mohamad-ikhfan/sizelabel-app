@@ -140,7 +140,7 @@ class SchedulePrintResource extends Resource
                         ]);
                     })
                     ->icon('heroicon-o-document-check')
-                    ->hidden(fn ($record): bool => $record->status != null),
+                    ->visible(auth()->user()->can('schedule-printing')),
                 Tables\Actions\EditAction::make()
                     ->hiddenLabel()
                     ->hidden(auth()->user()->id !== 1),
@@ -151,8 +151,7 @@ class SchedulePrintResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                ])
-                    ->hidden(auth()->user()->id !== 1),
+                ]),
             ]);
     }
 

@@ -20,6 +20,8 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    protected static ?string $navigationGroup = 'User Management';
+
     public static function form(Form $form): Form
     {
         return $form
@@ -80,7 +82,13 @@ class UserResource extends Resource
                     ->sortable()
                     ->searchable(),
 
-                Tables\Columns\TextColumn::make('permissions'),
+                Tables\Columns\TextColumn::make('roles')
+                    ->formatStateUsing(fn ($state) => $state->name)
+                    ->listWithLineBreaks(),
+
+                Tables\Columns\TextColumn::make('permissions')
+                    ->formatStateUsing(fn ($state) => $state->name)
+                    ->listWithLineBreaks(),
 
             ])
             ->filters([

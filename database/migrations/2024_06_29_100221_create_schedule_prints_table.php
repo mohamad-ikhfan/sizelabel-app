@@ -19,10 +19,10 @@ return new class extends Migration
             $table->string('style_number');
             $table->string('model_name');
             $table->float('qty');
-            $table->foreignId('shoe_id')->references('shoes')->nullable();
+            $table->foreignId('shoe_id')->nullable();
             $table->enum('status', ['printing', 'printed'])->nullable();
             $table->date('status_updated_at')->nullable();
-            $table->foreignId('status_updated_by_user_id')->references('users')->nullable();
+            $table->foreignId('status_updated_by_user_id')->nullable();
             $table->timestamps();
         });
     }

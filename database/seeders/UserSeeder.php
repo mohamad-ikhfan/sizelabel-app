@@ -31,12 +31,19 @@ class UserSeeder extends Seeder
         ];
 
         for ($i = 0; $i < count($data); $i++) {
-            if (User::where('nik', $data[$i]['nik'])->count() == 0) {
+            $user = User::where('nik', $data[$i]['nik'])->first();
+            if (!$user) {
                 if ($data[$i]['nik'] == '20535') {
                     $user = User::create($data[$i]);
                     $user->assignRole('super-admin');
                 } else {
                     User::create($data[$i]);
+                }
+            } else {
+                if ($data[$i]['nik'] == '20535') {
+                    $user->assignRole('super-admin');
+                } else {
+                    $user->givePermissionTo(['view-any-schedule-print', 'schedule-printing']);
                 }
             }
         }

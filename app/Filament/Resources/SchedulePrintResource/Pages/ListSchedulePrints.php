@@ -65,7 +65,8 @@ class ListSchedulePrints extends ListRecords
                             }
                         }
                     }
-                }),
+                })
+                ->visible(auth()->user()->can('sync-to-printed')),
 
             Actions\Action::make('refresh-material')
                 ->color('gray')
@@ -79,7 +80,8 @@ class ListSchedulePrints extends ListRecords
                             ]);
                         }
                     }
-                }),
+                })
+                ->visible(auth()->user()->can('refresh-material')),
 
             Actions\Action::make('new-schedule-print')
                 ->color('primary')
@@ -191,6 +193,7 @@ class ListSchedulePrints extends ListRecords
                         ->title('Schedule created.')
                         ->send();
                 })
+                ->visible(auth()->user()->can('new-schedule-print'))
         ];
     }
 }

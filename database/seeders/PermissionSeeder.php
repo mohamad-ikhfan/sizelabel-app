@@ -186,6 +186,9 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'sync-to-printed'
             ],
+            [
+                'name' => 'schedule-printing'
+            ],
         ];
 
         for ($i = 0; $i < count($data); $i++) {
@@ -197,7 +200,10 @@ class PermissionSeeder extends Seeder
             }
         }
 
-        $role = Role::create(['name' => 'super-admin']);
+        $role = Role::where('name', 'super-admin')->first();
+        if (!$role) {
+            $role = Role::create(['name' => 'super-admin']);
+        }
         $role->givePermissionTo(Permission::all());
     }
 }
