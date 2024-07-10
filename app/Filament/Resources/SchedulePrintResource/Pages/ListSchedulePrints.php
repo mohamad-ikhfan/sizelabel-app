@@ -104,20 +104,7 @@ class ListSchedulePrints extends ListRecords
                                 ->live(),
 
                             Forms\Components\Select::make('except_remarks')
-                                ->options(function (Loadplan $loadplan, Forms\Get $get) {
-                                    $options = [];
-                                    if ($get('from_release')) {
-                                        $loadplans = $loadplan->where('release', '>=', $get('from_release'))
-                                            ->get()
-                                            ->orderBy('release')
-                                            ->pluck('remark')
-                                            ->toArray();
-                                        foreach ($loadplans as $value) {
-                                            $options[$value] = $value;
-                                        }
-                                    }
-                                    return $options;
-                                })
+                                ->options(Loadplan::all()->pluck('remark', 'remark'))
                                 ->multiple()
                                 ->nullable(),
                         ]);
