@@ -14,11 +14,11 @@ class AccuracyOfPrintWidget extends BaseWidget
     {
         return $table
             ->query(AccuracyOfPrint::query())
-            ->defaultSort('schedule', 'desc')
+            ->defaultSort('print_date', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('schedule')
-                    ->date('d-F-Y'),
                 Tables\Columns\TextColumn::make('print_date')
+                    ->date('d-F-Y'),
+                Tables\Columns\TextColumn::make('schedule')
                     ->date('d-F-Y'),
                 ProgressColumn::make('accuracy'),
             ]);

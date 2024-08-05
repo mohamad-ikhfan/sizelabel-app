@@ -73,8 +73,10 @@ class DestroyRibbonResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->hidden(fn ($record) => auth()->user()->id == 1 ? false : $record->user_id !== auth()->user()->id),
+                Tables\Actions\DeleteAction::make()
+                    ->hidden(fn ($record) => auth()->user()->id == 1 ? false : $record->user_id !== auth()->user()->id),
             ]);
     }
 

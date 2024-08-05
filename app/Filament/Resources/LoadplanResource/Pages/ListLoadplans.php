@@ -5,6 +5,7 @@ namespace App\Filament\Resources\LoadplanResource\Pages;
 use App\Filament\Resources\LoadplanResource;
 use App\Jobs\LoadplanExportJob;
 use App\Jobs\LoadplanImportJob;
+use App\Models\Loadplan;
 use App\Models\User;
 use Filament\Actions;
 use Filament\Forms;
@@ -54,6 +55,7 @@ class ListLoadplans extends ListRecords
                     $receipent = User::find(auth()->user()->id);
                     sort($data['file_loadplans']);
                     foreach ($data['file_loadplans'] as $file) {
+                        Loadplan::whereNull('po_number')->delete();
                         LoadplanImportJob::dispatch($receipent, storage_path('app/public/' . $file), str_replace('imports/', '', $file));
                     }
 
