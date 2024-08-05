@@ -18,7 +18,7 @@ class SchedulePrintResource extends Resource
 {
     protected static ?string $model = SchedulePrint::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = null;
 
     protected static ?int $navigationSort = 4;
 

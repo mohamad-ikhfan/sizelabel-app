@@ -105,7 +105,7 @@ class LoadplanExport implements FromCollection, WithHeadings, WithColumnFormatti
             ->setVertical('center');
         $getStyle->getBorders()
             ->getAllBorders()
-            ->setBorderStyle('dashed');
+            ->setBorderStyle('thin');
 
         $headerStyle = $sheet->getStyle($headerColumn);
         $headerStyle->getFont()
