@@ -41,6 +41,7 @@ class ManageDestroyRibbons extends ManageRecords
 
             Actions\CreateAction::make()
                 ->action(function (Actions\CreateAction $createAction, array $data) {
+                    $data['user_id'] = $data['user_id'] ?? auth()->user()->id;
                     $destroyRibbon = $this->getModel()::where('date', $data['date'])
                         ->where('user_id', $data['user_id'])
                         ->first();

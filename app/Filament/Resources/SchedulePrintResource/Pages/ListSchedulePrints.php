@@ -125,7 +125,9 @@ class ListSchedulePrints extends ListRecords
                             if (!empty($loadplan->spk_publish)) {
                                 $spkPublishes->push(now()->parse($loadplan->spk_publish)->getTimestamp());
                             }
-                            $qtyOrigins->push($loadplan->qty_origin);
+                            if (!empty($loadplan->po_number)) {
+                                $qtyOrigins->push($loadplan->qty_origin);
+                            }
                         }
 
                         $schedule = null;
