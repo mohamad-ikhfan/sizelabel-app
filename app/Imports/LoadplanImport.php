@@ -35,17 +35,7 @@ class LoadplanImport implements ToArray, WithEvents
                     'remark' => !empty($column[4]) ? trim($column[4]) : "-",
                 ];
 
-                $loadplan = Loadplan::where([
-                    'release' => is_numeric($column[16]) ? Date::excelToDateTimeObject($column[9])->format('Y-m-d') : null,
-                    'po_number' => $column[11],
-                    'qty_origin' => $column[34],
-                ])->first();
-
-                if ($loadplan) {
-                    $loadplan->update($data);
-                } else {
-                    Loadplan::create($data);
-                }
+                Loadplan::create($data);
             }
         }
     }
