@@ -5,6 +5,7 @@ namespace App\Filament\Resources\LoadplanResource\Pages;
 use App\Filament\Resources\LoadplanResource;
 use App\Jobs\LoadplanExportJob;
 use App\Jobs\LoadplanImportJob;
+use App\Jobs\RecapDivertJob;
 use App\Models\Loadplan;
 use App\Models\User;
 use Filament\Actions;
@@ -33,6 +34,30 @@ class ListLoadplans extends ListRecords
                 })
                 ->visible(auth()->user()->can('export-loadplan')),
 
+            Actions\Action::make('import-divert-po')
+                ->color('gray')
+                ->form([
+                    Forms\Components\FileUpload::make('file_divert')
+                        ->hiddenLabel()
+                        ->acceptedFileTypes(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'])
+                        ->directory('imports')
+                        ->getUploadedFileNameForStorageUsing(
+                            fn (TemporaryUploadedFile $file): string => (string) $file->getClientOriginalName() . '_' . time()
+                        )
+                        ->required()
+                ])
+                ->action(function (array $data) {
+                    $file = $data['file_divert'];
+                    $receipent = User::find(auth()->user()->id);
+                    RecapDivertJob::dispatch($receipent, storage_path('app/public/' . $file, str_replace('imports/', '', $file)));
+                    Notifications\Notification::make()
+                        ->success()
+                        ->title('Recap divert loadplan on background.')
+                        ->body('After recap divert finished notification send.')
+                        ->send();
+                })
+                ->visible(auth()->user()->can('new-import-loadplan')),
+
             Actions\Action::make('new-import-loadplan')
                 ->color('primary')
                 ->modalWidth('lg')
@@ -54,8 +79,8 @@ class ListLoadplans extends ListRecords
                 ->action(function (array $data) {
                     $receipent = User::find(auth()->user()->id);
                     sort($data['file_loadplans']);
+                    Loadplan::truncate();
                     foreach ($data['file_loadplans'] as $file) {
-                        Loadplan::whereNull('po_number')->delete();
                         LoadplanImportJob::dispatch($receipent, storage_path('app/public/' . $file), str_replace('imports/', '', $file));
                     }
 
