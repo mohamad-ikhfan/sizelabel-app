@@ -43,40 +43,38 @@ class MaterialStockResource extends Resource
                             ->required(),
                         Forms\Components\Select::make('status')
                             ->options(['in' => 'Material in', 'out' => 'Material out'])
-                            ->required()
-                            ->live(),
-                        Forms\Components\Select::make('material_id')
-                            ->label('Material')
-                            ->options(Material::all()->pluck('name', 'id'))
-                            ->required()
-                            ->live(),
-                        Forms\Components\TextInput::make('qty')
-                            ->required()
-                            ->numeric()
-                            ->afterStateUpdated(function (Forms\Get $get, Forms\Set $set, $state) {
-                                $materialStock = MaterialStock::where('material_id', $get('material_id'))->latest('date')->first();
-                                if (!empty($materialStock)) {
-                                    $set('first_stock', $materialStock->last_stock);
-                                    if ($get('status') == 'in') {
-                                        $set('last_stock', $materialStock->last_stock + $state);
-                                    }
-                                    if ($get('status') == 'out') {
-                                        $set('last_stock', $materialStock->last_stock - $state);
-                                    }
-                                } else {
-                                    $set('first_stock', 0);
-                                    $set('last_stock', $state);
-                                }
-                            })
-                            ->live()
-                            ->readOnly(fn(Forms\Get $get) => empty($get('material_id')) && empty($get('status'))),
-                        Forms\Components\Textarea::make('remarks')
-                            ->nullable()
-                            ->columnSpanFull(),
-                        Forms\Components\Hidden::make('first_stock'),
-                        Forms\Components\Hidden::make('last_stock'),
-                        Forms\Components\Hidden::make('user_id')
-                            ->default(auth()->user()->id),
+                            ->required(),
+                        Forms\Components\Repeater::make('materials')
+                            ->schema([
+                                Forms\Components\Select::make('material_id')
+                                    ->label('Material')
+                                    ->options(Material::all()->pluck('name', 'id'))
+                                    ->required(),
+                                Forms\Components\TextInput::make('qty')
+                                    ->required()
+                                    ->numeric(),
+                                Forms\Components\Textarea::make('remarks')
+                                    ->nullable()
+                                    ->columnSpanFull(),
+                            ])
+                            ->columns()
+                            ->columnSpanFull()
+                            ->visibleOn('create'),
+
+                        Forms\Components\Fieldset::make('Material')
+                            ->schema([
+                                Forms\Components\Select::make('material_id')
+                                    ->label('Material')
+                                    ->options(Material::all()->pluck('name', 'id'))
+                                    ->required(),
+                                Forms\Components\TextInput::make('qty')
+                                    ->required()
+                                    ->numeric(),
+                                Forms\Components\Textarea::make('remarks')
+                                    ->nullable()
+                                    ->columnSpanFull(),
+                            ])
+                            ->visibleOn('edit')
                     ])
                     ->columns()
             ]);
@@ -98,6 +96,9 @@ class MaterialStockResource extends Resource
                 Tables\Columns\TextColumn::make('first_stock')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->formatStateUsing(fn($state) => strtoupper($state))
+                    ->color(fn($state) => $state == 'in' ? 'success' : 'danger')
+                    ->icon(fn($state) => $state == 'in' ? 'heroicon-m-arrow-up-circle' : 'heroicon-m-arrow-down-circle')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('qty')
                     ->sortable(),

@@ -39,8 +39,8 @@ class DestroyRibbonExport implements FromCollection, WithHeadings, WithColumnFor
         foreach (DestroyRibbon::where('date', '>=', $this->from)->where('date', '<=', $this->to)->orderBy('date')->get() as $destroyRibbon) {
             $collection->push([
                 'date' => Date::dateTimeToExcel(now()->parse($destroyRibbon->date)->toDateTime()),
-                'qty' => $destroyRibbon->qty,
                 'pic' => $destroyRibbon->user->name,
+                'qty' => $destroyRibbon->qty,
             ]);
         }
 
@@ -51,8 +51,8 @@ class DestroyRibbonExport implements FromCollection, WithHeadings, WithColumnFor
     {
         return [
             'DATE',
+            'PIC',
             'QTY',
-            'PIC'
         ];
     }
 
@@ -60,7 +60,7 @@ class DestroyRibbonExport implements FromCollection, WithHeadings, WithColumnFor
     {
         return [
             'A' => 'dd-mmmm-yyyy',
-            'B' => '0'
+            'C' => '0'
         ];
     }
 
@@ -71,8 +71,8 @@ class DestroyRibbonExport implements FromCollection, WithHeadings, WithColumnFor
 
         $getStyle = $sheet->getStyle($AllColumn);
         $getStyle->getFont()
-            ->setName('Tahoma')
-            ->setSize(11);
+            ->setName('Calibri')
+            ->setSize(12);
         $getStyle->getAlignment()
             ->setHorizontal('center')
             ->setVertical('center');
@@ -86,6 +86,6 @@ class DestroyRibbonExport implements FromCollection, WithHeadings, WithColumnFor
         $headerStyle->getFill()
             ->setFillType('solid')
             ->getStartColor()
-            ->setARGB('89fac5');
+            ->setARGB('ccffff');
     }
 }
