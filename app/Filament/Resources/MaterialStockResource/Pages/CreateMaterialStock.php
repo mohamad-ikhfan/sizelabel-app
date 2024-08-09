@@ -24,10 +24,10 @@ class CreateMaterialStock extends CreateRecord
             $dataMaterial = [
                 'date' => $data['date'],
                 'material_id' => $material['material_id'],
-                'first_stock' => floatval($materialStock->last_stock),
+                'first_stock' => floatval($materialStock->last_stock ?? 0),
                 'status' => $data['status'],
                 'qty' => floatval($material['qty']),
-                'last_stock' => floatval($data['status'] == 'in' ? ($materialStock->last_stock + $material['qty']) : $materialStock->last_stock - $material['qty']),
+                'last_stock' => floatval($data['status'] == 'in' ? ($materialStock->last_stock ?? 0 + $material['qty']) : $materialStock->last_stock ?? 0 - $material['qty']),
                 'remarks' => $material['remarks'],
                 'user_id' => auth()->user()->id
             ];
