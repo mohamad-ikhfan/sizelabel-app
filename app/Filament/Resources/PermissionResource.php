@@ -27,36 +27,6 @@ class PermissionResource extends Resource
         return auth()->user()->can('view-any-permission');
     }
 
-    // public static function canView(): bool
-    // {
-    //     return auth()->user()->can('view-permission');
-    // }
-
-    // public static function canCreate(): bool
-    // {
-    //     return auth()->user()->can('create-permission');
-    // }
-
-    // public static function canEdit(): bool
-    // {
-    //     return auth()->user()->can('edit-permission');
-    // }
-
-    // public static function canDelete(): bool
-    // {
-    //     return auth()->user()->can('delete-permission');
-    // }
-
-    // public static function canRestore(): bool
-    // {
-    //     return auth()->user()->can('restore-permission');
-    // }
-
-    // public static function canForceDelete(): bool
-    // {
-    //     return auth()->user()->can('force-delete-permission');
-    // }
-
     public static function form(Form $form): Form
     {
         return $form

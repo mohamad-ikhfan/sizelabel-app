@@ -26,36 +26,6 @@ class RoleResource extends Resource
         return auth()->user()->can('view-any-role');
     }
 
-    // public static function canView(): bool
-    // {
-    //     return auth()->user()->can('view-role');
-    // }
-
-    // public static function canCreate(): bool
-    // {
-    //     return auth()->user()->can('create-role');
-    // }
-
-    // public static function canEdit(): bool
-    // {
-    //     return auth()->user()->can('edit-role');
-    // }
-
-    // public static function canDelete(): bool
-    // {
-    //     return auth()->user()->can('delete-role');
-    // }
-
-    // public static function canRestore(): bool
-    // {
-    //     return auth()->user()->can('restore-role');
-    // }
-
-    // public static function canForceDelete(): bool
-    // {
-    //     return auth()->user()->can('force-delete-role');
-    // }
-
     public static function form(Form $form): Form
     {
         return $form

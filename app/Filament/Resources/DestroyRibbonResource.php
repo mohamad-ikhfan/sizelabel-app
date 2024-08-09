@@ -20,6 +20,11 @@ class DestroyRibbonResource extends Resource
 
     protected static ?string $navigationIcon = null;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->can('view-any-destroy-ribbon');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -74,9 +79,9 @@ class DestroyRibbonResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
-                    ->hidden(fn ($record) => auth()->user()->id == 1 ? false : $record->user_id !== auth()->user()->id),
+                    ->hidden(fn($record) => auth()->user()->id == 1 ? false : $record->user_id !== auth()->user()->id),
                 Tables\Actions\DeleteAction::make()
-                    ->hidden(fn ($record) => auth()->user()->id == 1 ? false : $record->user_id !== auth()->user()->id),
+                    ->hidden(fn($record) => auth()->user()->id == 1 ? false : $record->user_id !== auth()->user()->id),
             ]);
     }
 

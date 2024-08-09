@@ -177,6 +177,7 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'force-delete-schedule-print'
             ],
+
             [
                 'name' => 'new-schedule-print'
             ],
@@ -189,6 +190,73 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'schedule-printing'
             ],
+
+            [
+                'name' => 'view-any-destroy-ribbon'
+            ],
+            [
+                'name' => 'view-destroy-ribbon'
+            ],
+            [
+                'name' => 'create-destroy-ribbon'
+            ],
+            [
+                'name' => 'update-destroy-ribbon'
+            ],
+            [
+                'name' => 'delete-destroy-ribbon'
+            ],
+            [
+                'name' => 'restore-destroy-ribbon'
+            ],
+            [
+                'name' => 'force-delete-destroy-ribbon'
+            ],
+
+            [
+                'name' => 'view-any-material'
+            ],
+            [
+                'name' => 'view-material'
+            ],
+            [
+                'name' => 'create-material'
+            ],
+            [
+                'name' => 'update-material'
+            ],
+            [
+                'name' => 'delete-material'
+            ],
+            [
+                'name' => 'restore-material'
+            ],
+            [
+                'name' => 'force-delete-material'
+            ],
+
+            [
+                'name' => 'view-any-material-stock'
+            ],
+            [
+                'name' => 'view-material-stock'
+            ],
+            [
+                'name' => 'create-material-stock'
+            ],
+            [
+                'name' => 'update-material-stock'
+            ],
+            [
+                'name' => 'delete-material-stock'
+            ],
+            [
+                'name' => 'restore-material-stock'
+            ],
+            [
+                'name' => 'force-delete-material-stock'
+            ],
+
         ];
 
         for ($i = 0; $i < count($data); $i++) {
